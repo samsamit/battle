@@ -1,4 +1,4 @@
-import { Character, CharacterSpell } from './characterTypes';
+import { Character, CharacterSpell, PlayableCharacter } from './characterTypes';
 
 export type BattleAction = BasicAction | SpellAction;
 export interface BasicAction {
@@ -13,3 +13,5 @@ export interface Attendees {
   source: Character;
   affected: Character;
 }
+
+export type PlayerParty = PlayableCharacter[];

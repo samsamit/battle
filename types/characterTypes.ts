@@ -4,8 +4,14 @@ export interface Pool {
   max: number;
 }
 
-export interface Character {
+export interface Experience {
+  current: number;
+  nextLevel: number;
+}
+
+export interface BaseCharacter {
   id: number;
+  level: number;
   name: string;
   attackDamage: number;
   health: Pool;
@@ -14,6 +20,15 @@ export interface Character {
   statuses: CharacterStatus[];
   spells: CharacterSpell[];
 }
+
+export interface PlayableCharacter extends BaseCharacter {
+  experience: Experience;
+}
+export const isPlayableCharacter = (character: Character): character is PlayableCharacter =>
+  'experience' in character;
+
+export type UnplayableCharacter = BaseCharacter;
+export type Character = UnplayableCharacter | PlayableCharacter;
 
 export interface CharacterSpell {
   name: string;

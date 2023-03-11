@@ -1,8 +1,9 @@
 import { basicPoison } from '../constants/spells';
-import { Character } from '../types/characterTypes';
+import { PlayableCharacter, UnplayableCharacter } from '../types/characterTypes';
 
-export const testCharacter: Character = {
+export const testCharacter: PlayableCharacter = {
   id: 0,
+  level: 1,
   name: 'testCharacter1',
   attackDamage: 10,
   health: {
@@ -16,10 +17,15 @@ export const testCharacter: Character = {
   isUsers: true,
   statuses: [],
   spells: [basicPoison],
+  experience: {
+    current: 0,
+    nextLevel: 100,
+  },
 };
 
-export const testEnemyCharacter: Character = {
+export const testEnemyCharacter: UnplayableCharacter = {
   id: 1,
+  level: 5,
   name: 'testEnemy1',
   attackDamage: 10,
   health: {
@@ -34,3 +40,8 @@ export const testEnemyCharacter: Character = {
   statuses: [],
   spells: [],
 };
+
+export const getPlayableCharacterWithLevel = (level: number): PlayableCharacter => ({
+  ...testCharacter,
+  level,
+});

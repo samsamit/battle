@@ -1,0 +1,2 @@
+export const BASE_EXPERIENCE = 10;
+export const EXPERIENCE_LEVELUP_MULTIPLER = 1.5;
