@@ -1,6 +1,6 @@
 import { BASE_EXPERIENCE, EXPERIENCE_LEVELUP_MULTIPLER } from '../../constants/battleConstants';
-import { Attendees, PlayerParty } from '../../types/battleTypes';
-import { Character, isPlayableCharacter, PlayableCharacter } from '../../types/characterTypes';
+import { PlayerParty } from '../../types/battleTypes';
+import { Character, PlayableCharacter } from '../../types/characterTypes';
 
 export const gainExperience = (party: PlayerParty, killedEnemy: Character): PlayerParty => {
   const avgPartyLevel = getPartyAverageLevel(party);

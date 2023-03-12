@@ -19,6 +19,11 @@ export interface BaseCharacter {
   isUsers: boolean;
   statuses: CharacterStatus[];
   spells: CharacterSpell[];
+  stats: Stats;
+}
+
+export interface Stats {
+  initiative: number;
 }
 
 export interface PlayableCharacter extends BaseCharacter {
@@ -38,4 +43,6 @@ export interface CharacterSpell {
 }
 
 export const getPoolPercent = (pool: Pool) => (pool.current / pool.max) * 100;
+export const getExperiencePercent = (experience: Experience) =>
+  (experience.current / experience.nextLevel) * 100;
 export const isCharacterDead = (char: Character) => char.statuses.includes('DEAD');

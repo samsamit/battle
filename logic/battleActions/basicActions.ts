@@ -1,5 +1,28 @@
-import { Attendees, SpellAction } from '../../types/battleTypes';
+import { Attendees, BattleAction, BattleCharacter } from '../../types/battleTypes';
 import { Character, CharacterSpell, Pool } from '../../types/characterTypes';
+import { addAttendees } from './characterFunctions';
+
+export const runBattleAction = (
+  action: BattleAction,
+  attendees: Attendees,
+  characters: BattleCharacter[]
+): Character[] => {
+  const baseCharacters = characters.map((bc) => bc.character);
+  if (attendees.source.statuses.includes('DEAD')) return baseCharacters;
+
+  switch (action.type) {
+    case 'ATTACK': {
+      const newAttendees = handleAttack(attendees);
+      return addAttendees(baseCharacters, newAttendees);
+    }
+    case 'SPELL': {
+      const newAttendees = handleSpell(action.spell, attendees);
+      return addAttendees(baseCharacters, newAttendees);
+    }
+    default:
+      return baseCharacters;
+  }
+};
 
 export const handleAttack = ({ source, affected }: Attendees): Attendees => {
   affected.health = setPool(affected.health, source.attackDamage);

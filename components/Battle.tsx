@@ -2,13 +2,27 @@ import { Container, Flex, Text } from '@mantine/core';
 import React from 'react';
 import { useBattle } from '../hooks/useBattle';
 import { testCharacter, testEnemyCharacter } from '../tests/testConstants';
-import { Character } from '../types/characterTypes';
+import { BattleCharacter } from '../types/battleTypes';
 import CharacterContainer from './Battle/CharacterContainer';
 
 const Battle = () => {
-  const { characters, runAction } = useBattle([testCharacter, testEnemyCharacter]);
-  const userCharacters = characters.filter((character) => character.isUsers);
-  const enemyCharacters = characters.filter((character) => !character.isUsers);
+  const { turnNumber, battleCharacters, runAction } = useBattle([
+    testCharacter,
+    testEnemyCharacter,
+  ]);
+  const userCharacters = battleCharacters.filter(
+    (battleCharacter) => battleCharacter.character.isUsers
+  );
+  const enemyCharacters = battleCharacters.filter(
+    (battleCharacter) => !battleCharacter.character.isUsers
+  );
+
+  const isCharacterTurn = (character: BattleCharacter) => {
+    const characterIndex = battleCharacters.findIndex(
+      (battleCharacter) => battleCharacter.character.id === character.character.id
+    );
+    return characterIndex === turnNumber;
+  };
 
   return (
     <Container>
@@ -16,9 +30,13 @@ const Battle = () => {
         <Flex>
           {userCharacters.map((character) => (
             <CharacterContainer
-              character={character}
+              isOnTurn={isCharacterTurn(character)}
+              battleCharacter={character}
               onBattleAction={(action) =>
-                runAction(action, { source: character, affected: enemyCharacters[0] })
+                runAction(action, {
+                  source: character.character,
+                  affected: enemyCharacters[0].character,
+                })
               }
             />
           ))}
@@ -27,9 +45,13 @@ const Battle = () => {
         <Flex>
           {enemyCharacters.map((character) => (
             <CharacterContainer
-              character={character}
+              isOnTurn={isCharacterTurn(character)}
+              battleCharacter={character}
               onBattleAction={(action) =>
-                runAction(action, { source: character, affected: userCharacters[0] })
+                runAction(action, {
+                  source: character.character,
+                  affected: userCharacters[0].character,
+                })
               }
             />
           ))}

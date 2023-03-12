@@ -1,4 +1,4 @@
-import { Attendees } from '../../types/battleTypes';
+import { Attendees, BattleCharacter } from '../../types/battleTypes';
 import { Character } from '../../types/characterTypes';
 
 export const addAttendees = (characters: Character[], attendees: Attendees) => {

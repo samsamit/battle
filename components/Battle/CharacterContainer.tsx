@@ -1,24 +1,60 @@
 import { Button, Flex, Progress, Text } from '@mantine/core';
 import React from 'react';
-import { BattleAction } from '../../types/battleTypes';
-import { Character, getPoolPercent, isCharacterDead } from '../../types/characterTypes';
+import { BattleAction, BattleCharacter } from '../../types/battleTypes';
+import {
+  Character,
+  getExperiencePercent,
+  getPoolPercent,
+  isCharacterDead,
+  isPlayableCharacter,
+} from '../../types/characterTypes';
 import BattleActions from './BattleActions';
 
 interface CharacterContainerProps {
-  character: Character;
+  isOnTurn: boolean;
+  battleCharacter: BattleCharacter;
   onBattleAction: (action: BattleAction) => void;
 }
 const CharacterContainer = (props: CharacterContainerProps) => {
-  const { character } = props;
+  const { battleCharacter, isOnTurn } = props;
+  const { character, actionPoints } = battleCharacter;
   const { health, mana } = character;
+  const isPlayer = isPlayableCharacter(character);
   return (
-    <Flex direction={'column'} align="center" gap={16} w={300}>
+    <Flex
+      style={{ border: 'solid 1px', padding: 8, borderColor: isOnTurn ? 'green' : 'white' }}
+      direction={'column'}
+      align="center"
+      gap={16}
+      w={300}
+    >
       <Text>{character.name}</Text>
+      {isPlayer && (
+        <Flex w="100%" justify={'flex-end'}>
+          BA: {actionPoints}
+        </Flex>
+      )}
       <Text>atk: {character.attackDamage}</Text>
-      <Text>atk: {character.health.current}</Text>
+      <Text>hp: {character.health.current}</Text>
       <Progress w={'100%'} color="red" size="lg" value={getPoolPercent(health)} />
       <Progress w={'100%'} color="blue" size="lg" value={getPoolPercent(mana)} />
-      {isCharacterDead(character) ? <Text>DEAD!</Text> : <BattleActions {...props} />}
+      {isPlayer && (
+        <Progress
+          w={'100%'}
+          color="yellow"
+          size="sm"
+          value={getExperiencePercent(character.experience)}
+        />
+      )}
+      {isCharacterDead(character) ? (
+        <Text>DEAD!</Text>
+      ) : (
+        <BattleActions
+          disable={!isOnTurn}
+          character={character}
+          onBattleAction={props.onBattleAction}
+        />
+      )}
     </Flex>
   );
 };

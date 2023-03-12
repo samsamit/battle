@@ -9,6 +9,11 @@ export interface SpellAction {
   spell: CharacterSpell;
 }
 
+export interface BattleCharacter {
+  character: Character;
+  actionPoints: number;
+}
+
 export interface Attendees {
   source: Character;
   affected: Character;

@@ -7,10 +7,11 @@ type MenuType = 'basic' | 'spells';
 
 interface BattleActionsProps {
   character: Character;
+  disable: boolean;
   onBattleAction: (action: BattleAction) => void;
 }
 
-const BattleActions = ({ character, onBattleAction }: BattleActionsProps) => {
+const BattleActions = ({ character, onBattleAction, disable }: BattleActionsProps) => {
   const [menu, setMenu] = useState<MenuType>('basic');
   const { spells } = character;
 
@@ -19,12 +20,16 @@ const BattleActions = ({ character, onBattleAction }: BattleActionsProps) => {
       return (
         <Grid w={'100%'}>
           <Grid.Col span={6}>
-            <Button w={'100%'} onClick={() => onBattleAction({ type: 'ATTACK' })}>
+            <Button
+              disabled={disable}
+              w={'100%'}
+              onClick={() => onBattleAction({ type: 'ATTACK' })}
+            >
               Attack
             </Button>
           </Grid.Col>
           <Grid.Col span={6}>
-            <Button w={'100%'} onClick={() => setMenu('spells')}>
+            <Button disabled={disable} w={'100%'} onClick={() => setMenu('spells')}>
               Spells
             </Button>
           </Grid.Col>
@@ -35,13 +40,17 @@ const BattleActions = ({ character, onBattleAction }: BattleActionsProps) => {
         <Grid w={'100%'}>
           {spells.map((spell) => (
             <Grid.Col span={6}>
-              <Button w={'100%'} onClick={() => onBattleAction({ type: 'SPELL', spell: spell })}>
+              <Button
+                disabled={disable}
+                w={'100%'}
+                onClick={() => onBattleAction({ type: 'SPELL', spell: spell })}
+              >
                 {spell.name}
               </Button>
             </Grid.Col>
           ))}
           <Grid.Col span={6}>
-            <Button w={'100%'} onClick={() => setMenu('basic')}>
+            <Button disabled={disable} w={'100%'} onClick={() => setMenu('basic')}>
               Back
             </Button>
           </Grid.Col>
