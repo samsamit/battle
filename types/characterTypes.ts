@@ -16,7 +16,6 @@ export interface BaseCharacter {
   attackDamage: number;
   health: Pool;
   mana: Pool;
-  isUsers: boolean;
   statuses: CharacterStatus[];
   spells: CharacterSpell[];
   stats: Stats;
